@@ -9,6 +9,7 @@ IAM_ROLE = config['IAM_ROLE']['ARN']
 LOG_DATA = config['S3']['LOG_DATA']
 LOG_JSONPATH = config['S3']['LOG_JSONPATH']
 SONG_DATA = config['S3']['SONG_DATA']
+DWH_ROLE_ARN = config.get("DWH","DWH_ROLE_ARN")
 
 
 # DROP TABLES
@@ -25,31 +26,46 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 
 staging_events_table_create= ("""
 CREATE TABLE staging_events (
-    songplay_id SERIAL PRIMARY KEY, 
-    start_time date NOT NULL, 
-    user_id text NOT NULL, 
-    level text, 
-    song_id text, 
-    artist_id text, 
-    session_id text, 
-    location text, 
-    user_agent text
+    "songplay_id" BIGINT IDENTITY(1,1), 
+    "artist" TEXT,
+    "auth" TEXT,
+    "firstName" TEXT,
+    "gender" CHAR,
+    "itemInSession" INTEGER,
+    "lastName" TEXT,
+    "length" DOUBLE PRECISION,
+    "level" TEXT,
+    "location" TEXT,
+    "method" TEXT,
+    "page" TEXT,
+    "registration" DOUBLE PRECISION,
+    "sessionId" INTEGER,
+    "song" TEXT,
+    "status" INTEGER,
+    "ts" BIGINT,
+    "userAgent" TEXT,
+    "userId" TEXT
 );
 """)
 
 staging_songs_table_create = ("""
 CREATE TABLE staging_songs (
-    song_id text PRIMARY KEY, 
-    title text NOT NULL, 
-    artist_id text, 
-    year int, 
-    duration numeric
+    "song_id" BIGINT IDENTITY(1,1), 
+    "num_songs" INTEGER,
+    "artist_id" TEXT,
+    "artist_latitude" TEXT,
+    "artist_longitude" TEXT,
+    "artist_location" TEXT,
+    "artist_name" TEXT,
+    "title" TEXT,
+    "duration" DOUBLE PRECISION,
+    "year" INTEGER
 );
 """)
 
 songplay_table_create = ("""
 CREATE TABLE songplays (
-    songplay_id SERIAL PRIMARY KEY, 
+    songplay_id BIGINT IDENTITY(1,1), 
     start_time date NOT NULL, 
     user_id text NOT NULL, 
     level text, 
@@ -106,31 +122,22 @@ CREATE TABLE time (
 
 # STAGING TABLES
 
-staging_events_copyold = ("""
-COPY staging_events 
-FROM {}
-CREDENTIALS {}
-COMPUPDATE OFF region 'us-west-2'
-format as json {};
-""").format(LOG_DATA,'aws_iam_role='+IAM_ROLE,LOG_JSONPATH)
-
-
-table = "part"
-DWH_ROLE_ARN="arn:aws:iam::850736946254:role/dwhRole"
-staging_events_copy = """
-copy {} from 's3://awssampledbuswest2/ssbgz/{}' 
-credentials 'aws_iam_role={}'
-gzip region 'us-west-2';
-""".format(table,table, DWH_ROLE_ARN)
+staging_events_copy = ("""
+    COPY staging_events 
+    FROM '{}'
+    CREDENTIALS 'aws_iam_role={}'
+    REGION 'us-west-2'
+    FORMAT AS json '{}';
+""").format(LOG_DATA, DWH_ROLE_ARN, LOG_JSONPATH)
 
 
 staging_songs_copy = ("""
-COPY staging_songs 
-FROM {}
-CREDENTIALS aws_iam_role={}
-COMPUPDATE OFF region 'us-west-2'
-FORMAT AS JSON 'auto';
-""").format(SONG_DATA, IAM_ROLE)
+    COPY staging_songs 
+    FROM '{}'
+    CREDENTIALS 'aws_iam_role={}'
+    REGION 'us-west-2'
+    FORMAT AS json '{}';
+""").format(SONG_DATA, DWH_ROLE_ARN, LOG_JSONPATH)
 
 
 # FINAL TABLES
