@@ -1,0 +1,1 @@
+config_file = '/Users/alexei/dwh.cfg'
