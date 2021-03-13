@@ -144,14 +144,15 @@ staging_songs_copy = ("""
 
 songplay_table_insert = ("""
 INSERT INTO songplays (user_id, level, session_id, location, user_agent, song_id, artist_id, start_time)
-SELECT user_id, level, session_id, location, user_agent, song_id, artist_id, ts
+SELECT user_id, level, session_id, location, user_agent, song_id, artist_id, TO_CHAR(ts, 'MON-DD-YYYY HH12:MIPM')
 FROM staging_events
-JOIN staging_songs ON (staging_events.song = staging_songs.song AND staging_events.artist = staging_songs.artist);
+JOIN staging_songs ON (staging_events.song = staging_songs.title AND staging_events.artist = staging_songs.artist_name);
 """)
 
 user_table_insert = ("""
 INSERT INTO users (user_id, first_name, last_name, gender, level)
 SELECT user_id, first_name, last_name, gender, level
+FROM staging_events
 ON CONFLICT (user_id) DO UPDATE SET level = EXCLUDED.level;
 """)
 
@@ -163,15 +164,17 @@ FROM staging_songs;
 
 artist_table_insert = ("""
 INSERT INTO artists (artist_id, name, location, latitude, longitude)
-VALUES (%s, %s, %s, %s, %s)
+SELECT artist_id, artist_name, artist_location, artist_latitude, artist_longitude
+FROM staging_songs
 ON CONFLICT (artist_id) DO NOTHING;
 """)
 
 time_table_insert = ("""
 INSERT INTO time (start_time, hour, day, week, month, year, weekday)
-VALUES (%s, %s, %s, %s, %s, %s, %s)
-ON CONFLICT (start_time) DO NOTHING;
+SELECT TO_CHAR(ts, 'MON-DD-YYYY HH12:MIPM'), EXTRACT(hour from ts), EXTRACT(day from ts), EXTRACT(week from ts), EXTRACT(month from ts), EXTRACT(year from ts), EXTRACT(weekday from ts)
+FROM staging_events
 """)
+
 
 # QUERY LISTS
 
