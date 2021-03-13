@@ -143,20 +143,22 @@ staging_songs_copy = ("""
 # FINAL TABLES
 
 songplay_table_insert = ("""
-INSERT INTO songplays (start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
-VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+INSERT INTO songplays (user_id, level, session_id, location, user_agent, song_id, artist_id, start_time)
+SELECT user_id, level, session_id, location, user_agent, song_id, artist_id, ts
+FROM staging_events
+JOIN staging_songs ON (staging_events.song = staging_songs.song AND staging_events.artist = staging_songs.artist);
 """)
 
 user_table_insert = ("""
 INSERT INTO users (user_id, first_name, last_name, gender, level)
-VALUES (%s, %s, %s, %s, %s)
+SELECT user_id, first_name, last_name, gender, level
 ON CONFLICT (user_id) DO UPDATE SET level = EXCLUDED.level;
 """)
 
 song_table_insert = ("""
-INSERT INTO songs (song_id, title, artist_id, year, duration)
-VALUES (%s, %s, %s, %s, %s)
-ON CONFLICT (song_id) DO NOTHING;
+INSERT INTO songs (song_id, title, year, duration, artist_id)
+SELECT song_id, title, year, cast(duration as float), artist_id 
+FROM staging_songs;
 """)
 
 artist_table_insert = ("""
