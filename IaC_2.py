@@ -5,71 +5,50 @@ import os
 import configparser
 from botocore.exceptions import ClientError
 import psycopg2
+from settings import config_file
 
 
 config = configparser.ConfigParser()
-config.read_file(open('dwh.cfg'))
+config.read_file(open(config_file))
 KEY                    = config.get('AWS','KEY')
 SECRET                 = config.get('AWS','SECRET')
-
-reg_n="us-west-2"
 
 DWH_CLUSTER_IDENTIFIER = config.get("DWH","DWH_CLUSTER_IDENTIFIER")
 DWH_DB_USER            = config.get("DWH","DWH_DB_USER")
 DWH_DB_PASSWORD        = config.get("DWH","DWH_DB_PASSWORD")
 DWH_PORT               = config.get("DWH","DWH_PORT")
 DWH_DB                 = config.get("DWH","DWH_DB")
+DWH_REGION_NAME        = config.get("DWH","DWH_REGION_NAME")
 
 
 ec2 = boto3.resource(
     'ec2',
-    region_name=reg_n,
+    region_name=DWH_REGION_NAME,
     aws_access_key_id=KEY,
     aws_secret_access_key=SECRET
 )
 
-s3 = boto3.resource(
-    's3',
-    region_name=reg_n,
-    aws_access_key_id=KEY,
-    aws_secret_access_key=SECRET
-)
-
-iam = boto3.client(
-    'iam',
-    aws_access_key_id=KEY,
-    aws_secret_access_key=SECRET,
-    region_name=reg_n
-)
 
 redshift = boto3.client(
     'redshift',
-    region_name=reg_n,
+    region_name=DWH_REGION_NAME,
     aws_access_key_id=KEY,
     aws_secret_access_key=SECRET
 )
 
-    
-def prettyRedshiftProps(props):
-    pd.set_option('display.max_colwidth', -1)
-    keysToShow = ["ClusterIdentifier", "NodeType", "ClusterStatus", "MasterUsername", "DBName", "Endpoint", "NumberOfNodes", 'VpcId']
-    x = [(k, v) for k,v in props.items() if k in keysToShow]
-    return pd.DataFrame(data=x, columns=["Key", "Value"])
-
 
 myClusterProps = redshift.describe_clusters(ClusterIdentifier=DWH_CLUSTER_IDENTIFIER)['Clusters'][0]
-df = prettyRedshiftProps(myClusterProps)
 
 
 DWH_ENDPOINT = myClusterProps['Endpoint']['Address']
-DWH_ROLE_ARN = myClusterProps['IamRoles'][0]['IamRoleArn']
 DWH_ENDPOINT = DWH_ENDPOINT.replace("/", "\/")
-DWH_ROLE_ARN = DWH_ROLE_ARN.replace("/", "\/")
-
-command = f"sed -i 's/DWH_ENDPOINT=/DWH_ENDPOINT={DWH_ENDPOINT}/'  dwh.cfg"
+command = f"sed -i 's/DWH_ENDPOINT=/DWH_ENDPOINT={DWH_ENDPOINT}/'  {config_file}"
 os.system(command)
 
-command = f"sed -i 's/DWH_ROLE_ARN=/DWH_ROLE_ARN={DWH_ROLE_ARN}/'  dwh.cfg"
+
+DWH_ROLE_ARN = myClusterProps['IamRoles'][0]['IamRoleArn']
+DWH_ROLE_ARN = DWH_ROLE_ARN.replace("/", "\/")
+command = f"sed -i 's/DWH_ROLE_ARN=/DWH_ROLE_ARN={DWH_ROLE_ARN}/'  {config_file}"
 os.system(command)
 
 

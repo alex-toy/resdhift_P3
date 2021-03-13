@@ -4,10 +4,11 @@ import json
 import os
 import configparser
 from botocore.exceptions import ClientError
+from settings import config_file
 
 
 config = configparser.ConfigParser()
-config.read_file(open('dwh.cfg'))
+config.read_file(open(config_file))
 
 KEY                    = config.get('AWS','KEY')
 SECRET                 = config.get('AWS','SECRET')
@@ -23,35 +24,19 @@ DWH_DB_PASSWORD        = config.get("DWH","DWH_DB_PASSWORD")
 DWH_PORT               = config.get("DWH","DWH_PORT")
 
 DWH_IAM_ROLE_NAME      = config.get("DWH", "DWH_IAM_ROLE_NAME")
+DWH_REGION_NAME        = config.get("DWH","DWH_REGION_NAME")
 
-
-
-reg_n="us-west-2"
-
-ec2 = boto3.resource(
-    'ec2',
-    region_name=reg_n,
-    aws_access_key_id=KEY,
-    aws_secret_access_key=SECRET
-)
-
-s3 = boto3.resource(
-    's3',
-    region_name=reg_n,
-    aws_access_key_id=KEY,
-    aws_secret_access_key=SECRET
-)
 
 iam = boto3.client(
     'iam',
     aws_access_key_id=KEY,
     aws_secret_access_key=SECRET,
-    region_name=reg_n
+    region_name=DWH_REGION_NAME
 )
 
 redshift = boto3.client(
     'redshift',
-    region_name=reg_n,
+    region_name=DWH_REGION_NAME,
     aws_access_key_id=KEY,
     aws_secret_access_key=SECRET
 )
@@ -86,7 +71,6 @@ roleArn = iam.get_role(RoleName=DWH_IAM_ROLE_NAME)['Role']['Arn']
 
 try:
     response = redshift.create_cluster(        
-        #HW
         ClusterType=DWH_CLUSTER_TYPE,
         NodeType=DWH_NODE_TYPE,
         #NumberOfNodes=int(DWH_NUM_NODES),
