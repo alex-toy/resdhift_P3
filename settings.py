@@ -1,1 +1,1 @@
-config_file = '/Users/alexei/dwh.cfg'
+config_file = ''
