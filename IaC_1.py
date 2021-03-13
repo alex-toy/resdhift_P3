@@ -57,7 +57,6 @@ redshift = boto3.client(
 )
 
 
-# Create the IAM role
 try:
     print("1.1 Creating a new IAM Role") 
     dwhRole = iam.create_role(
@@ -74,7 +73,6 @@ except Exception as e:
     print(e)
     
     
-# TODO: Attach Policy
 print('1.2 Attaching Policy')
 iam.attach_role_policy(
     RoleName=DWH_IAM_ROLE_NAME,
@@ -82,7 +80,6 @@ iam.attach_role_policy(
 )['ResponseMetadata']['HTTPStatusCode']
 
 
-# TODO: Get and print the IAM role ARN
 print('1.3 Get the IAM role ARN')
 roleArn = iam.get_role(RoleName=DWH_IAM_ROLE_NAME)['Role']['Arn']
 
