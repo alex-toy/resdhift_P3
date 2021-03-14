@@ -49,9 +49,11 @@ try:
         RoleName=DWH_IAM_ROLE_NAME,
         Description = "Allows Redshift clusters to call AWS services on your behalf.",
         AssumeRolePolicyDocument=json.dumps(
-            {'Statement': [{'Action': 'sts:AssumeRole',
-               'Effect': 'Allow',
-               'Principal': {'Service': 'redshift.amazonaws.com'}}],
+            {'Statement': [{
+                'Action': 'sts:AssumeRole',
+                'Effect': 'Allow',
+                'Principal': {'Service': 'redshift.amazonaws.com'}
+                }],
              'Version': '2012-10-17'})
     )    
 except Exception as e:
