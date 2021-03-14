@@ -5,7 +5,7 @@ import configparser
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
 
-IAM_ROLE = config['IAM_ROLE']['ARN']
+#IAM_ROLE = config['IAM_ROLE']['ARN']
 LOG_DATA = config['S3']['LOG_DATA']
 LOG_JSONPATH = config['S3']['LOG_JSONPATH']
 SONG_DATA = config['S3']['SONG_DATA']

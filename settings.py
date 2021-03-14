@@ -1,3 +1,6 @@
+import configparser
+import psycopg2
+
 config_file = '/Users/alexei/dwh.cfg'
 
 

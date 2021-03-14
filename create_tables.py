@@ -1,6 +1,6 @@
 import configparser
 import psycopg2
-from sql_queries import create_table_queries, drop_table_queries, copy_table_queries, staging_events_copy
+from sql_queries_creation import create_table_queries, drop_table_queries
 from settings import config_file
 
 def drop_tables(cur, conn):
