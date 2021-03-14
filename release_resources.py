@@ -14,31 +14,65 @@ DWH_IAM_ROLE_NAME      = config.get("DWH", "DWH_IAM_ROLE_NAME")
 DWH_REGION_NAME        = config.get("DWH","DWH_REGION_NAME")
 
 
-iam = boto3.client(
-    'iam',
-    aws_access_key_id=KEY,
-    aws_secret_access_key=SECRET,
-    region_name=DWH_REGION_NAME
-)
+def release() :
+    iam = boto3.client(
+        'iam',
+        aws_access_key_id=KEY,
+        aws_secret_access_key=SECRET,
+        region_name=DWH_REGION_NAME
+    )
+
+    redshift = boto3.client(
+        'redshift',
+        region_name=DWH_REGION_NAME,
+        aws_access_key_id=KEY,
+        aws_secret_access_key=SECRET
+    )
+
+    try:
+        redshift.delete_cluster( 
+            ClusterIdentifier=DWH_CLUSTER_IDENTIFIER,  
+            SkipFinalClusterSnapshot=True
+        )
+    except Exception as e:
+        print(e)
+
+    try:
+        iam.detach_role_policy(
+            RoleName=DWH_IAM_ROLE_NAME, 
+            PolicyArn="arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+        )
+    except Exception as e:
+        print(e)
+           
+    try: 
+        iam.delete_role(RoleName=DWH_IAM_ROLE_NAME)
+    except Exception as e:
+        print(e)
 
 
-redshift = boto3.client(
-    'redshift',
-    region_name=DWH_REGION_NAME,
-    aws_access_key_id=KEY,
-    aws_secret_access_key=SECRET
-)
+
+if __name__ == "__main__":
+
+    release()
+
+    # DWH_IAM_ROLE_NAME      = config.get("DWH", "DWH_IAM_ROLE_NAME")
+    # DWH_REGION_NAME        = config.get("DWH","DWH_REGION_NAME")
+
+    # iam = boto3.client(
+    #     'iam',
+    #     aws_access_key_id=KEY,
+    #     aws_secret_access_key=SECRET,
+    #     region_name=DWH_REGION_NAME
+    # )
+
+    
+    # iam.detach_role_policy(
+    #     RoleName=DWH_IAM_ROLE_NAME, 
+    #     PolicyArn="arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+    # )
+    # iam.delete_role(RoleName=DWH_IAM_ROLE_NAME)
 
 
 
-redshift.delete_cluster( 
-    ClusterIdentifier=DWH_CLUSTER_IDENTIFIER,  
-    SkipFinalClusterSnapshot=True
-)
-
-iam.detach_role_policy(
-    RoleName=DWH_IAM_ROLE_NAME, 
-    PolicyArn="arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
-)
-
-iam.delete_role(RoleName=DWH_IAM_ROLE_NAME)
+    
