@@ -1,6 +1,7 @@
 import configparser
 import psycopg2
 from sql_queries_tables_insertion import insert_table_queries
+from settings import config_file, get_connection
 
 
 def insert_tables(cur, conn):

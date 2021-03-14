@@ -28,7 +28,7 @@ staging_songs_copy = ("""
     FROM '{}'
     CREDENTIALS 'aws_iam_role={}'
     REGION 'us-west-2'
-    FORMAT AS json '{}';
+    JSON 'auto';
 """).format(SONG_DATA, DWH_ROLE_ARN, LOG_JSONPATH)
 
 
@@ -36,5 +36,4 @@ staging_songs_copy = ("""
 
 copy_table_queries = [staging_events_copy, staging_songs_copy]
 
-print(copy_table_queries)
 
