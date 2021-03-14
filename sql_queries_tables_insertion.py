@@ -9,14 +9,14 @@ JOIN staging_songs ON (staging_events.song = staging_songs.title AND staging_eve
 
 user_table_insert = ("""
 INSERT INTO users (user_id, first_name, last_name, gender, level)
-SELECT userid, first_name, last_name, gender, level
+SELECT userid, firstname, lastname, gender, level
 FROM staging_events
 ON CONFLICT (user_id) DO UPDATE SET level = EXCLUDED.level;
 """)
 
 song_table_insert = ("""
 INSERT INTO songs (song_id, title, year, duration, artist_id)
-SELECT song_id, title, year, cast(duration as float), artist_id 
+SELECT song_id, title, year, CAST(duration as float), artist_id 
 FROM staging_songs;
 """)
 
