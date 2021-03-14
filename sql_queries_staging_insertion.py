@@ -1,11 +1,11 @@
 import configparser
+from settings import config_file
 
 
 # CONFIG
 config = configparser.ConfigParser()
-config.read('dwh.cfg')
+config.read(config_file)
 
-#IAM_ROLE = config['IAM_ROLE']['ARN']
 LOG_DATA = config['S3']['LOG_DATA']
 LOG_JSONPATH = config['S3']['LOG_JSONPATH']
 SONG_DATA = config['S3']['SONG_DATA']
@@ -35,4 +35,6 @@ staging_songs_copy = ("""
 # QUERY LISTS
 
 copy_table_queries = [staging_events_copy, staging_songs_copy]
+
+print(copy_table_queries)
 
