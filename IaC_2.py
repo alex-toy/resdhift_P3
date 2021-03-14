@@ -5,7 +5,7 @@ import os
 import configparser
 from botocore.exceptions import ClientError
 import psycopg2
-from settings import config_file
+from settings import config_file, set_config_file
 
 
 config = configparser.ConfigParser()
@@ -41,15 +41,18 @@ myClusterProps = redshift.describe_clusters(ClusterIdentifier=DWH_CLUSTER_IDENTI
 
 
 DWH_ENDPOINT = myClusterProps['Endpoint']['Address']
-DWH_ENDPOINT = DWH_ENDPOINT.replace("/", "\/")
-command = f"sed -i 's/DWH_ENDPOINT=/DWH_ENDPOINT={DWH_ENDPOINT}/'  {config_file}"
-os.system(command)
+#DWH_ENDPOINT = DWH_ENDPOINT.replace("/", "\/")
+#command = f"sed -i 's/DWH_ENDPOINT=/DWH_ENDPOINT={DWH_ENDPOINT}/'  {config_file}"
+#command = command.replace("/", "\/")
+#os.system(command)
 
 
 DWH_ROLE_ARN = myClusterProps['IamRoles'][0]['IamRoleArn']
-DWH_ROLE_ARN = DWH_ROLE_ARN.replace("/", "\/")
-command = f"sed -i 's/DWH_ROLE_ARN=/DWH_ROLE_ARN={DWH_ROLE_ARN}/'  {config_file}"
-os.system(command)
+#DWH_ROLE_ARN = DWH_ROLE_ARN.replace("/", "\/")
+#command = f"sed -i 's/DWH_ROLE_ARN=/DWH_ROLE_ARN={DWH_ROLE_ARN}/'  {config_file}"
+#command = command.replace("/", "\/")
+#os.system(command)
+set_config_file(config_file, DWH_ENDPOINT, DWH_ROLE_ARN)
 
 
 try:

@@ -10,7 +10,7 @@ You need to have Python 3.6.3 installed for this project
 
 ## 1. Purpose of the project
 
-The purpose of the project is to build an ETL pipeline that extracts data from S3, stages it in Redshift, and transforms data into a set of dimensional tables for analysis,and insights in what songs users are listening to. Data is modelled according to a star schema with fact and dimension tables for easy and fast analysis. Redshift gives the opportunity to execute SQL statements that create the analytics tables from these staging tables.
+The purpose of the project is to build an ETL pipeline that extracts data from S3, stages it in Redshift, and transforms data into a set of dimensional tables for analysis and insights in what songs users are listening to. Data is modelled according to a star schema with fact and dimension tables for fast and easy analysis. Redshift gives the opportunity to execute SQL statements that create the analytics tables from these staging tables.
 
 
 
@@ -97,6 +97,11 @@ $ cd <this_project>
 ```
 
 ## 2. Install requirements
+
+I had a problem installing psycopg2. The following lines did the trick though :
+
+export LDFLAGS="-L/usr/local/opt/openssl/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl/include"
 
 ```
 $ pip install -r requirements.txt
