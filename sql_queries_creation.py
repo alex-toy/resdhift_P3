@@ -13,7 +13,6 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 
 staging_events_table_create= ("""
 CREATE TABLE staging_events (
-    "songplay_id" BIGINT IDENTITY(1,1), 
     "artist" TEXT,
     "auth" TEXT,
     "firstName" TEXT,

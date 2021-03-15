@@ -1,4 +1,7 @@
-config_file = '/Users/alexei/dwh.cfg'
+import configparser
+import psycopg2
+
+config_file = "path/to/dwh.cfg"
 
 
 def get_connection() :
