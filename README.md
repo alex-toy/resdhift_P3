@@ -131,6 +131,7 @@ You need to have an AWS account to run the complee analysis.
 5. Run *create_tables.py* and check that all tables are created in the redshift query editor.
 6. Run *etl_staging.py*, then *etl_tables.py*. In the query editor, run queries to ensure that tables *staging_events* and *staging_songs* and other fact and dimension tables are properly populated.
 7. Fill free to write queries in *test.py* to analyse the data.
+8. Once done, don't forget to *release_resources.py* !!!!
 
 
 --------
