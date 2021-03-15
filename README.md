@@ -100,8 +100,8 @@ $ cd <this_project>
 
 I had a problem installing psycopg2. The following lines did the trick though :
 
-export LDFLAGS="-L/usr/local/opt/openssl/lib"
-export CPPFLAGS="-I/usr/local/opt/openssl/include"
+    export LDFLAGS="-L/usr/local/opt/openssl/lib"
+    export CPPFLAGS="-I/usr/local/opt/openssl/include"
 
 ```
 $ pip install -r requirements.txt
