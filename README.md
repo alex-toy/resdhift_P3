@@ -111,7 +111,7 @@ I had a problem installing psycopg2. The following lines did the trick though :
 ```
 $ pip install -r requirements.txt
 ```
-I suggest you create a python virtual environment for this project : [website (https://docs.python.org/3/tutorial/venv.html)][website]
+    I suggest you create a python virtual environment for this project : <https://docs.python.org/3/tutorial/venv.html>
 --------
 
 
