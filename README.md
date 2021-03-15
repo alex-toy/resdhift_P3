@@ -129,9 +129,8 @@ You need to have an AWS account to run the complee analysis.
 4. Run *IaC_1.py* and wait untill you see the cluster available in your console.
 4. Run *IaC_2.py*.
 5. Run *create_tables.py* and check that all tables are created in the redshift query editor.
-6. Run *etl_staging.py*, then *etl_tables.py*. In the query editor, run queries to ensure that tables *staging_events* and *staging_songs* are properly populated.
-7. Run *etl_staging.py*, then *etl_tables.py*. In the query editor, run queries to ensure that tables *staging_events* and *staging_songs* and other fact and dimension tables are properly populated.
-8. Fill free to write queries in *test.py* to analyse the data.
+6. Run *etl_staging.py*, then *etl_tables.py*. In the query editor, run queries to ensure that tables *staging_events* and *staging_songs* and other fact and dimension tables are properly populated.
+7. Fill free to write queries in *test.py* to analyse the data.
 
 
 --------
