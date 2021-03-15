@@ -121,7 +121,7 @@ $ pip install -r requirements.txt
 
 ## 2. Configuration of project
 
-You need to have an AWS account to run the complee analysis.
+You need to have an AWS account to run the complete analysis.
 
 1. Copy the *dwh.cfg* into a safe place.
 2. Fill in all fields except *LOG_DATA*, *LOG_JSONPATH*, *SONG_DATA* which are already filled and *DWH_ENDPOINT*, *DWH_ROLE_ARN* which will be automatically filled for you. 
