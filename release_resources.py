@@ -15,6 +15,17 @@ DWH_REGION_NAME        = config.get("DWH","DWH_REGION_NAME")
 
 
 def release() :
+    """
+    Utility function that automatically drops resources in redshift cluster.
+
+    Parameters
+    ----------
+    No parameter
+
+    Returns
+    -------
+    No return.
+    """
     iam = boto3.client(
         'iam',
         aws_access_key_id=KEY,
@@ -56,22 +67,6 @@ if __name__ == "__main__":
 
     release()
 
-    # DWH_IAM_ROLE_NAME      = config.get("DWH", "DWH_IAM_ROLE_NAME")
-    # DWH_REGION_NAME        = config.get("DWH","DWH_REGION_NAME")
-
-    # iam = boto3.client(
-    #     'iam',
-    #     aws_access_key_id=KEY,
-    #     aws_secret_access_key=SECRET,
-    #     region_name=DWH_REGION_NAME
-    # )
-
-    
-    # iam.detach_role_policy(
-    #     RoleName=DWH_IAM_ROLE_NAME, 
-    #     PolicyArn="arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
-    # )
-    # iam.delete_role(RoleName=DWH_IAM_ROLE_NAME)
 
 
 

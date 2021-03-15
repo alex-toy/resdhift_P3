@@ -5,6 +5,17 @@ config_file = "path/to/dwh.cfg"
 
 
 def get_connection() :
+    """
+    Utility function that factorizes out connection code to redshift cluster.
+
+    Parameters
+    ----------
+    No parameters 
+
+    Returns
+    -------
+    A psycopg2.connect object and the corresponding cursor that functions like create_tables or load_staging_tables need.
+    """
     config = configparser.ConfigParser()
     config.read(config_file)
     DWH_DB_USER            = config.get("DWH","DWH_DB_USER")
@@ -21,6 +32,19 @@ def get_connection() :
 
 
 def set_config_file(config_file, DWH_ENDPOINT, DWH_ROLE_ARN) :
+    """
+    Utility function that fills the config file automatically for you.
+
+    Parameters
+    ----------
+    config_file : path to your dwh.cfg file.
+    DWH_ENDPOINT : endpoint for your cluster.
+    DWH_ROLE_ARN : ARN of the role allowed to act on the cluster on your behalf.
+
+    Returns
+    -------
+    No return.
+    """
     lines = []
     with open(config_file, 'r') as f:
         lines = f.readlines()
