@@ -107,8 +107,10 @@ I suggest you create a python virtual environment for this project : <https://do
 
 I had a problem installing psycopg2. The following lines did the trick though :
 
+```
 - export LDFLAGS="-L/usr/local/opt/openssl/lib"
 - export CPPFLAGS="-I/usr/local/opt/openssl/include"
+```
 
 ```
 $ pip install -r requirements.txt
@@ -123,11 +125,11 @@ You need to have an AWS account to run the complee analysis.
 
 1. Copy the *dwh.cfg* into a safe place.
 2. Fill in all fields except *LOG_DATA*, *LOG_JSONPATH*, *SONG_DATA* which are already filled and *DWH_ENDPOINT*, *DWH_ROLE_ARN* which will be automatically filled for you. 
-3. in file *settings.py*, give the path to **dwh.cfg* to variable *config_file*.
+3. In file *settings.py*, give the path to **dwh.cfg* to variable *config_file*.
 4. Run *IaC_1.py* and wait untill you see the cluster available in your console.
 4. Run *IaC_2.py*.
 5. Run *create_tables.py* and check that all tables are created in the redshift query editor.
-6. Run *etl_staging.py*, then *etl_tables.py*. In the query editor, run queries to ensure that tables staging_events and staging_songs are properly populated.
+6. Run *etl_staging.py*, then *etl_tables.py*. In the query editor, run queries to ensure that tables *staging_events* and *staging_songs* are properly populated.
 7. Run *etl_staging.py*, then *etl_tables.py*. In the query editor, run queries to ensure that tables *staging_events* and *staging_songs* and other fact and dimension tables are properly populated.
 8. Fill free to write queries in *test.py* to analyse the data.
 
