@@ -41,21 +41,12 @@ myClusterProps = redshift.describe_clusters(ClusterIdentifier=DWH_CLUSTER_IDENTI
 
 
 DWH_ENDPOINT = myClusterProps['Endpoint']['Address']
-#DWH_ENDPOINT = DWH_ENDPOINT.replace("/", "\/")
-#command = f"sed -i 's/DWH_ENDPOINT=/DWH_ENDPOINT={DWH_ENDPOINT}/'  {config_file}"
-#command = command.replace("/", "\/")
-#os.system(command)
-
-
 DWH_ROLE_ARN = myClusterProps['IamRoles'][0]['IamRoleArn']
-#DWH_ROLE_ARN = DWH_ROLE_ARN.replace("/", "\/")
-#command = f"sed -i 's/DWH_ROLE_ARN=/DWH_ROLE_ARN={DWH_ROLE_ARN}/'  {config_file}"
-#command = command.replace("/", "\/")
-#os.system(command)
 set_config_file(config_file, DWH_ENDPOINT, DWH_ROLE_ARN)
 
 
 try:
+    print('Open an incoming TCP port to access the cluster endpoint')
     vpc = ec2.Vpc(id=myClusterProps['VpcId'])
     defaultSg = list(vpc.security_groups.all())[0]
     print(defaultSg)

@@ -73,16 +73,21 @@ Once the data has been ETLed, you are free to take full benefit from the power o
 # Project Organization 
 ----------------------
 
-    ├── README.md               <- The top-level README for users and developers using this project.
-    ├── create_tables.py        <- Python script allowing to create database, create / drop tables with appropriate schema
-    ├── etl.ipynb               <- Notebook for step by step testing
-    ├── requirements.txt        <- install psycopg2 for local use
-    ├── sql_queries.py          <- SQL queries
-    ├── test.ipynb              <- unitary tests for creation, deletion, insertion steps
-    ├── etl.py                  <- Python script allowing to create tables based on json files
-    ├── stack.yml               <- Docker container for postgres image
-    ├── data_querying.ipynb     <- Notebook for querying the star model
-    ├── data                    <- json files containing data
+    ├── README.md                           <- The top-level README for users and developers using this project.
+    ├── create_tables.py                    <- Python script allowing to create database, create / drop tables with appropriate schema.
+    ├── IaC1.py                             <- Creates new iam role, attaches policy AmazonS3ReadOnlyAccess to it and finally creates new cluster programmatically.
+    ├── IaC2.py                             <- Open an incoming TCP port to access the cluster endpoint.
+    ├── etl_staging.ipynb                   <- Loads staging tables from S3 into cluster.
+    ├── etl_tables.ipynb                    <- Creates facts and dimension tables.
+    ├── requirements.txt                    <- install psycopg2 for local use
+    ├── sql_queries_creation.py             <- SQL queries for creation of tables
+    ├── sql_queries_staging_insertion.py    <- SQL queries for insertion of data into staging tables.
+    ├── sql_queries_tables_insertion.py     <- SQL queries for insertion of data into fact and dimension tables.
+    ├── test.ipynb                          <- Unitary tests for creation, deletion, insertion steps
+    ├── release_resources.py                <- Automatically release all resources created on Redshift.
+    ├── settings.py                         <- Useful functions for project.
+    ├── get_files_from_S3.py                <- Download files form S3 to have a look at internal structure.
+    ├── dwh.cfg                             <- Config file containing credentials. Hide it!!
 
 
 
@@ -100,8 +105,21 @@ $ cd <this_project>
 
 I had a problem installing psycopg2. The following lines did the trick though :
 
-    export LDFLAGS="-L/usr/local/opt/openssl/lib"
-    export CPPFLAGS="-I/usr/local/opt/openssl/include"
+- export LDFLAGS="-L/usr/local/opt/openssl/lib"
+- export CPPFLAGS="-I/usr/local/opt/openssl/include"
+
+```
+$ pip install -r requirements.txt
+```
+--------
+
+
+## 2. Configuration of project
+
+I had a problem installing psycopg2. The following lines did the trick though :
+
+- export LDFLAGS="-L/usr/local/opt/openssl/lib"
+- export CPPFLAGS="-I/usr/local/opt/openssl/include"
 
 ```
 $ pip install -r requirements.txt
