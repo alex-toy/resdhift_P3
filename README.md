@@ -4,7 +4,7 @@ By Alessio Rea
 
 ==============================
 
-You need to have Python 3.6.3 installed for this project
+You need to have Python 3.8.5 installed for this project
 
 # General explanation
 
@@ -111,19 +111,18 @@ I had a problem installing psycopg2. The following lines did the trick though :
 ```
 $ pip install -r requirements.txt
 ```
+I suggest you create a python virtual environment for this project : [website (https://docs.python.org/3/tutorial/venv.html)][website]
 --------
 
 
 ## 2. Configuration of project
 
-I had a problem installing psycopg2. The following lines did the trick though :
+You need to have an AWS account to run the complee analysis.
 
-- export LDFLAGS="-L/usr/local/opt/openssl/lib"
-- export CPPFLAGS="-I/usr/local/opt/openssl/include"
+1. Copy the dwh.cfg into a safe place.
+2. When asked in prompt, fill in the path of dwh.cfg.
 
-```
-$ pip install -r requirements.txt
-```
+
 --------
 
 
